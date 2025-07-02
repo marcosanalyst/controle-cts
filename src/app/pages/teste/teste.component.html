@@ -3,6 +3,13 @@
 <form (ngSubmit)="salvar()">
   <input [(ngModel)]="novoTeste.nome" name="nome" placeholder="Nome do teste" required />
 
+  <select [(ngModel)]="novoTeste.clienteId" name="clienteId" required>
+    <option [ngValue]="0" disabled selected>Selecione um cliente</option>
+    <option *ngFor="let cliente of clientes" [ngValue]="cliente.id">
+      {{ cliente.nome }}
+    </option>
+  </select>
+
   <select [(ngModel)]="novoTeste.categoriaId" name="categoria" required>
     <option [ngValue]="0" disabled>Selecione uma categoria</option>
     <option *ngFor="let c of categorias" [ngValue]="c.id">
@@ -37,6 +44,7 @@
     <tr>
       <th>ID</th>
       <th>Nome</th>
+      <th>Cliente</th>
       <th>Categoria</th>
       <th>Responsável</th>
       <th>Estado</th>
@@ -48,6 +56,7 @@
     <tr *ngFor="let t of testes">
       <td>{{ t.id }}</td>
       <td>{{ t.nome }}</td>
+      <td>{{ nomeCliente(t.clienteId) }}</td>
       <td>{{ nomeCategoria(t.categoriaId) }}</td>
       <td>{{ nomeResponsavel(t.responsavelId) }}</td>
       <td>{{ t.estado }}</td>
