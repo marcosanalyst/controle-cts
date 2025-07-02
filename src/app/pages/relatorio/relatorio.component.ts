@@ -1,40 +1,55 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // 👈 importar FormsModule
+import { FormsModule } from '@angular/forms';
+
+import { ClienteService } from '../../services/cliente.service';
+import { TesteService } from '../../services/teste.service';
+
+import { Cliente } from '../../models/cliente.model';
+import { Teste } from '../../models/teste.model';
 
 @Component({
   selector: 'app-relatorio',
-  standalone: true, // 👈 componente standalone
-  imports: [CommonModule, FormsModule], // 👈 importar FormsModule aqui também
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './relatorio.component.html',
   styleUrls: ['./relatorio.component.css']
 })
-export class RelatorioComponent {
+export class RelatorioComponent implements OnInit {
   clienteSelecionadoId: number | null = null;
   clienteSelecionadoNome: string = '';
 
-  clientes = [
-    { id: 1, nome: 'Empresa A' },
-    { id: 2, nome: 'Empresa B' }
-  ];
+  clientes: Cliente[] = [];
+  testes: Teste[] = [];
+  testesFiltrados: Teste[] = [];
 
-  testes = [
-    { id: 1, nome: 'Teste 1', clienteId: 1, categoria: 'Cartões', estado: 'Em andamento', responsavel: 'João' },
-    { id: 2, nome: 'Teste 2', clienteId: 2, categoria: 'Empréstimos', estado: 'Finalizado', responsavel: 'Maria' },
-    { id: 3, nome: 'Teste 3', clienteId: 1, categoria: 'Credcesta', estado: 'Impedido', responsavel: 'Pedro' }
-  ];
+  constructor(
+    private clienteService: ClienteService,
+    private testeService: TesteService
+  ) {}
 
-  testesFiltrados: any[] = [];
+  ngOnInit(): void {
+    this.carregarClientesETestes();
+  }
 
-carregarTestes() {
-  if (this.clienteSelecionadoId !== null) {
+  carregarClientesETestes(): void {
+    this.clientes = this.clienteService.getAll();
+    this.testes = this.testeService.getAll();
+    console.log('[🔄] Clientes carregados:', this.clientes);
+    console.log('[🔄] Todos os testes carregados:', this.testes);
+  }
+
+  carregarTestes(): void {
     const cliente = this.clientes.find(c => c.id === this.clienteSelecionadoId);
     this.clienteSelecionadoNome = cliente?.nome || '';
-    this.testesFiltrados = this.testes.filter(t => t.clienteId === this.clienteSelecionadoId);
-  } else {
-    this.clienteSelecionadoNome = '';
-    this.testesFiltrados = [];
-  }
-}
 
+    // Sempre pega a lista mais recente
+    this.testes = this.testeService.getAll();
+
+    this.testesFiltrados = this.testes.filter(
+      t => t.clienteId === this.clienteSelecionadoId
+    );
+
+    console.log(`[📊] Testes do cliente ${this.clienteSelecionadoNome}:`, this.testesFiltrados);
+  }
 }

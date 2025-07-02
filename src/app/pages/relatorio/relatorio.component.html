@@ -3,12 +3,13 @@
 
   <label for="cliente">Selecione um cliente:</label>
   <select id="cliente" [(ngModel)]="clienteSelecionadoId" (change)="carregarTestes()">
-    <option *ngFor="let cliente of clientes" [value]="cliente.id">
+    <option [ngValue]="null" disabled selected>Selecione um cliente</option>
+    <option *ngFor="let cliente of clientes" [ngValue]="cliente.id">
       {{ cliente.nome }}
     </option>
   </select>
 
-  <h2 *ngIf="testesFiltrados.length">Testes de {{ clienteSelecionadoNome }}</h2>
+  <h2 *ngIf="testesFiltrados.length > 0">Testes de {{ clienteSelecionadoNome }}</h2>
 
   <table *ngIf="testesFiltrados.length > 0">
     <thead>
@@ -22,12 +23,14 @@
     <tbody>
       <tr *ngFor="let teste of testesFiltrados">
         <td>{{ teste.nome }}</td>
-        <td>{{ teste.categoria }}</td>
-        <td>{{ teste.responsavel }}</td>
+        <td>{{ teste.categoriaId }}</td>
+        <td>{{ teste.responsavelId }}</td>
         <td>{{ teste.estado }}</td>
       </tr>
     </tbody>
   </table>
 
-  <p *ngIf="clienteSelecionadoId && testesFiltrados.length === 0">Nenhum teste encontrado para este cliente.</p>
+  <p *ngIf="clienteSelecionadoId && testesFiltrados.length === 0">
+    Nenhum teste encontrado para este cliente.
+  </p>
 </div>
