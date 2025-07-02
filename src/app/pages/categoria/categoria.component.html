@@ -1,0 +1,39 @@
+<h2>Cadastro de Categorias</h2>
+
+<form (ngSubmit)="salvar()">
+  <input type="text" [(ngModel)]="nomeCategoria" name="nome" placeholder="Nome da categoria" required />
+
+  <select [(ngModel)]="clienteIdSelecionado" name="cliente" required>
+    <option [ngValue]="null" disabled>Selecione um cliente</option>
+    <option *ngFor="let cliente of clientes" [ngValue]="cliente.id">
+      {{ cliente.nome }}
+    </option>
+  </select>
+
+  <button type="submit">{{ editandoId ? 'Atualizar' : 'Adicionar' }}</button>
+  <button type="button" (click)="cancelar()" *ngIf="editandoId">Cancelar</button>
+</form>
+
+<hr />
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Cliente</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let c of categorias">
+      <td>{{ c.id }}</td>
+      <td>{{ c.nome }}</td>
+      <td>{{ nomeCliente(c.clienteId) }}</td>
+      <td>
+        <button (click)="editar(c)">Editar</button>
+        <button (click)="excluir(c.id)">Excluir</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

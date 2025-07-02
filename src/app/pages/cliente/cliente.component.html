@@ -1,0 +1,35 @@
+<h2>Cadastro de Clientes</h2>
+
+<form (ngSubmit)="salvar()">
+  <input
+    type="text"
+    [(ngModel)]="nomeCliente"
+    name="nome"
+    placeholder="Nome do cliente"
+    required
+  />
+  <button type="submit">{{ editandoId ? 'Atualizar' : 'Adicionar' }}</button>
+  <button type="button" (click)="cancelar()" *ngIf="editandoId">Cancelar</button>
+</form>
+
+<hr />
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let cliente of clientes">
+      <td>{{ cliente.id }}</td>
+      <td>{{ cliente.nome }}</td>
+      <td>
+        <button (click)="editar(cliente)">Editar</button>
+        <button (click)="excluir(cliente.id)">Excluir</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

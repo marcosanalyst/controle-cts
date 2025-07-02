@@ -1,0 +1,61 @@
+<h2>Cadastro de Casos de Teste</h2>
+
+<form (ngSubmit)="salvar()">
+  <input [(ngModel)]="novoTeste.nome" name="nome" placeholder="Nome do teste" required />
+
+  <select [(ngModel)]="novoTeste.categoriaId" name="categoria" required>
+    <option [ngValue]="0" disabled>Selecione uma categoria</option>
+    <option *ngFor="let c of categorias" [ngValue]="c.id">
+      {{ c.nome }}
+    </option>
+  </select>
+
+  <select [(ngModel)]="novoTeste.responsavelId" name="responsavel" required>
+    <option [ngValue]="0" disabled>Selecione um responsável</option>
+    <option *ngFor="let r of responsaveis" [ngValue]="r.id">
+      {{ r.nome }}
+    </option>
+  </select>
+
+  <select [(ngModel)]="novoTeste.estado" name="estado">
+    <option value="em_andamento">Em Andamento</option>
+    <option value="finalizado">Finalizado</option>
+    <option value="impedido">Impedido</option>
+    <option value="backlog">Backlog</option>
+  </select>
+
+  <input [(ngModel)]="novoTeste.impedimento" name="impedimento" placeholder="Impedimento" />
+
+  <button type="submit">{{ editandoId ? 'Atualizar' : 'Adicionar' }}</button>
+  <button *ngIf="editandoId" type="button" (click)="cancelar()">Cancelar</button>
+</form>
+
+<hr />
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Categoria</th>
+      <th>Responsável</th>
+      <th>Estado</th>
+      <th>Impedimento</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let t of testes">
+      <td>{{ t.id }}</td>
+      <td>{{ t.nome }}</td>
+      <td>{{ nomeCategoria(t.categoriaId) }}</td>
+      <td>{{ nomeResponsavel(t.responsavelId) }}</td>
+      <td>{{ t.estado }}</td>
+      <td>{{ t.impedimento }}</td>
+      <td>
+        <button (click)="editar(t)">Editar</button>
+        <button (click)="excluir(t.id)">Excluir</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
