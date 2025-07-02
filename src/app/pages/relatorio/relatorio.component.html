@@ -1,0 +1,33 @@
+<div class="container">
+  <h1>Testes por Cliente</h1>
+
+  <label for="cliente">Selecione um cliente:</label>
+  <select id="cliente" [(ngModel)]="clienteSelecionadoId" (change)="carregarTestes()">
+    <option *ngFor="let cliente of clientes" [value]="cliente.id">
+      {{ cliente.nome }}
+    </option>
+  </select>
+
+  <h2 *ngIf="testesFiltrados.length">Testes de {{ clienteSelecionadoNome }}</h2>
+
+  <table *ngIf="testesFiltrados.length > 0">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Categoria</th>
+        <th>Responsável</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let teste of testesFiltrados">
+        <td>{{ teste.nome }}</td>
+        <td>{{ teste.categoria }}</td>
+        <td>{{ teste.responsavel }}</td>
+        <td>{{ teste.estado }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="clienteSelecionadoId && testesFiltrados.length === 0">Nenhum teste encontrado para este cliente.</p>
+</div>

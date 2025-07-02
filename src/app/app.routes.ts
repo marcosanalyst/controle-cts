@@ -20,7 +20,10 @@ export const routes: Routes = [
   loadComponent: () => import('./pages/responsavel/responsavel.component').then(m => m.ResponsavelComponent)
 },
 
-
+{
+  path: 'relatorio',
+  loadComponent: () => import('./pages/relatorio/relatorio.component').then(m => m.RelatorioComponent)
+},
   
   { path: '', redirectTo: 'clientes', pathMatch: 'full' },
   { path: '**', redirectTo: 'clientes' }
