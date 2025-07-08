@@ -13,6 +13,14 @@ export class CategoriaService {
   }
 
   create(categoria: Omit<Categoria, 'id'>): void {
+    const nomeExistente = this.categorias.some(
+      c => c.nome.trim().toLowerCase() === categoria.nome.trim().toLowerCase()
+    );
+    if (nomeExistente) {
+      alert('Já existe uma categoria com esse nome.');
+      return;
+    }
+
     this.categorias.push({ id: this.nextId++, ...categoria });
   }
 
