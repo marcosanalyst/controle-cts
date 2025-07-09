@@ -42,6 +42,41 @@
 
 <hr />
 
+<!-- 🔍 Filtros dinâmicos -->
+<div style="margin-bottom: 10px;">
+  <input [(ngModel)]="filtro.nome" placeholder="Filtrar por nome" (input)="aplicarFiltro()" name="filtroNome" />
+
+  <select [(ngModel)]="filtro.clienteId" (change)="aplicarFiltro()" name="filtroCliente">
+    <option [ngValue]="null">Todos os clientes</option>
+    <option *ngFor="let cliente of clientes" [ngValue]="cliente.id">
+      {{ cliente.nome }}
+    </option>
+  </select>
+
+  <select [(ngModel)]="filtro.categoriaId" (change)="aplicarFiltro()" name="filtroCategoria">
+    <option [ngValue]="null">Todas as categorias</option>
+    <option *ngFor="let c of categorias" [ngValue]="c.id">
+      {{ c.nome }}
+    </option>
+  </select>
+
+  <select [(ngModel)]="filtro.responsavelId" (change)="aplicarFiltro()" name="filtroResponsavel">
+    <option [ngValue]="null">Todos os responsáveis</option>
+    <option *ngFor="let r of responsaveis" [ngValue]="r.id">
+      {{ r.nome }}
+    </option>
+  </select>
+
+  <select [(ngModel)]="filtro.estado" (change)="aplicarFiltro()" name="filtroEstado">
+    <option [ngValue]="null">Todos os estados</option>
+    <option value="em_andamento">Em Andamento</option>
+    <option value="finalizado">Finalizado</option>
+    <option value="impedido">Impedido</option>
+    <option value="backlog">Backlog</option>
+  </select>
+</div>
+
+<!-- 📋 Tabela com testes filtrados -->
 <table>
   <thead>
     <tr>
@@ -56,7 +91,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let t of testes">
+    <tr *ngFor="let t of testesFiltrados">
       <td>{{ t.id }}</td>
       <td>{{ t.nome }}</td>
       <td>{{ nomeCliente(t.clienteId) }}</td>

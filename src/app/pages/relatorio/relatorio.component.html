@@ -1,36 +1,81 @@
 <div class="container">
-  <h1>Testes por Cliente</h1>
+  <h1>Relatório de Casos de Teste</h1>
 
-  <label for="cliente">Selecione um cliente:</label>
-  <select id="cliente" [(ngModel)]="clienteSelecionadoId" (change)="carregarTestes()">
-    <option [ngValue]="null" disabled selected>Selecione um cliente</option>
-    <option *ngFor="let cliente of clientes" [ngValue]="cliente.id">
-      {{ cliente.nome }}
-    </option>
-  </select>
+  <!-- Filtros -->
+  <div class="filtros">
+    <label>
+      Cliente:
+      <select [(ngModel)]="filtroClienteId" (change)="aplicarFiltros()">
+        <option [ngValue]="null">Todos</option>
+        <option *ngFor="let cliente of clientes" [ngValue]="cliente.id">
+          {{ cliente.nome }}
+        </option>
+      </select>
+    </label>
 
-  <h2 *ngIf="testesFiltrados.length > 0">Testes de {{ clienteSelecionadoNome }}</h2>
+    <label>
+      Categoria:
+      <select [(ngModel)]="filtroCategoriaId" (change)="aplicarFiltros()">
+        <option [ngValue]="null">Todas</option>
+        <option *ngFor="let categoria of categorias" [ngValue]="categoria.id">
+          {{ categoria.nome }}
+        </option>
+      </select>
+    </label>
 
+    <label>
+      Responsável:
+      <select [(ngModel)]="filtroResponsavelId" (change)="aplicarFiltros()">
+        <option [ngValue]="null">Todos</option>
+        <option *ngFor="let r of responsaveis" [ngValue]="r.id">
+          {{ r.nome }}
+        </option>
+      </select>
+    </label>
+
+    <label>
+      Estado:
+      <select [(ngModel)]="filtroEstado" (change)="aplicarFiltros()">
+        <option value="">Todos</option>
+        <option value="em_andamento">Em Andamento</option>
+        <option value="finalizado">Finalizado</option>
+        <option value="impedido">Impedido</option>
+        <option value="backlog">Backlog</option>
+      </select>
+    </label>
+
+    <label>
+      Impedimento:
+      <input
+        type="text"
+        [(ngModel)]="filtroImpedimento"
+        (input)="aplicarFiltros()"
+        placeholder="Buscar impedimento"
+      />
+    </label>
+  </div>
+
+  <!-- Tabela -->
   <table *ngIf="testesFiltrados.length > 0">
     <thead>
       <tr>
-        <th>Nome</th>
+        <th>Cliente</th>
         <th>Categoria</th>
         <th>Responsável</th>
         <th>Estado</th>
+        <th>Impedimento</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let teste of testesFiltrados">
-        <td>{{ teste.nome }}</td>
-        <td>{{ teste.categoriaId }}</td>
-        <td>{{ teste.responsavelId }}</td>
+        <td>{{ nomeCliente(teste.clienteId) }}</td>
+        <td>{{ nomeCategoria(teste.categoriaId) }}</td>
+        <td>{{ nomeResponsavel(teste.responsavelId) }}</td>
         <td>{{ teste.estado }}</td>
+        <td>{{ teste.impedimento }}</td>
       </tr>
     </tbody>
   </table>
 
-  <p *ngIf="clienteSelecionadoId && testesFiltrados.length === 0">
-    Nenhum teste encontrado para este cliente.
-  </p>
+  <p *ngIf="testesFiltrados.length === 0">Nenhum teste encontrado com os filtros aplicados.</p>
 </div>

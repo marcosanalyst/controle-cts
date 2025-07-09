@@ -14,6 +14,14 @@
 
 <hr />
 
+<!-- 🔍 Campo de filtro -->
+<input
+  type="text"
+  [(ngModel)]="filtroCliente"
+  placeholder="Filtrar clientes por nome..."
+  name="filtroCliente"
+/>
+
 <table>
   <thead>
     <tr>
@@ -23,7 +31,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let cliente of clientes">
+    <tr *ngFor="let cliente of clientes | filtroPorNome:filtroCliente">
       <td>{{ cliente.id }}</td>
       <td>{{ cliente.nome }}</td>
       <td>

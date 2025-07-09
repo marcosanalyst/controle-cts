@@ -16,6 +16,23 @@
 
 <hr />
 
+<h3>Filtros</h3>
+<input
+  type="text"
+  [(ngModel)]="filtroNome"
+  (ngModelChange)="aplicarFiltro()"
+  placeholder="Filtrar por nome"
+/>
+
+<select [(ngModel)]="filtroClienteId" (ngModelChange)="aplicarFiltro()">
+  <option [ngValue]="null">Todos os clientes</option>
+  <option *ngFor="let cliente of clientes" [ngValue]="cliente.id">
+    {{ cliente.nome }}
+  </option>
+</select>
+
+<hr />
+
 <table>
   <thead>
     <tr>
@@ -26,7 +43,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let c of categorias">
+    <tr *ngFor="let c of categoriasFiltradas">
       <td>{{ c.id }}</td>
       <td>{{ c.nome }}</td>
       <td>{{ nomeCliente(c.clienteId) }}</td>

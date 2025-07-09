@@ -12,7 +12,10 @@ import { Responsavel } from '../../models/responsavel.model';
 })
 export class ResponsavelComponent {
   responsaveis: Responsavel[] = [];
+  responsaveisFiltrados: Responsavel[] = [];
+
   nomeResponsavel = '';
+  filtroNome = '';
   editandoId: number | null = null;
 
   constructor(private responsavelService: ResponsavelService) {
@@ -21,6 +24,14 @@ export class ResponsavelComponent {
 
   carregar() {
     this.responsaveis = this.responsavelService.getAll();
+    this.aplicarFiltro();
+  }
+
+  aplicarFiltro() {
+    const termo = this.filtroNome.toLowerCase();
+    this.responsaveisFiltrados = this.responsaveis.filter(r =>
+      r.nome.toLowerCase().includes(termo)
+    );
   }
 
   salvar() {
