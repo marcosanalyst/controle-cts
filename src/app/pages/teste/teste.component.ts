@@ -21,14 +21,22 @@ import { ClienteService } from '../../services/cliente.service';
 })
 export class TesteComponent {
   testes: Teste[] = [];
+  testesFiltrados: Teste[] = [];
   categorias: Categoria[] = [];
   responsaveis: Responsavel[] = [];
-  clientes: Cliente[] = []; // ✅ NOVO
+  clientes: Cliente[] = [];
 
+  filtro = {
+    nome: '',
+    clienteId: 0,
+    categoriaId: 0,
+    responsavelId: 0,
+    estado: ''
+  };
 
   novoTeste: Partial<Teste> = {
     nome: '',
-    clienteId: 0, // 👈 novo campo
+    clienteId: 0,
     categoriaId: 0,
     responsavelId: 0,
     estado: 'em_andamento',
@@ -36,22 +44,20 @@ export class TesteComponent {
   };
 
   editandoId: number | null = null;
-  
   mostrarCampoResponsavel: boolean = true;
-
-categoriaAlterada() {
-  const categoria = this.categorias.find(c => c.id === this.novoTeste.categoriaId);
-  this.mostrarCampoResponsavel = !categoria?.responsavelId;
-}
 
   constructor(
     private testeService: TesteService,
     private categoriaService: CategoriaService,
     private responsavelService: ResponsavelService,
-    private clienteService: ClienteService // ✅ NOVO
-
+    private clienteService: ClienteService
   ) {
     this.carregar();
+  }
+
+  categoriaAlterada() {
+    const categoria = this.categorias.find(c => c.id === this.novoTeste.categoriaId);
+    this.mostrarCampoResponsavel = !categoria?.responsavelId;
   }
 
   carregar() {
@@ -59,10 +65,22 @@ categoriaAlterada() {
     this.categorias = this.categoriaService.getAll();
     this.responsaveis = this.responsavelService.getAll();
     this.clientes = this.clienteService.getAll();
+    this.aplicarFiltro();
+  }
+
+  aplicarFiltro() {
+    this.testesFiltrados = this.testes.filter(t => {
+      return (
+        (!this.filtro.nome || t.nome.toLowerCase().includes(this.filtro.nome.toLowerCase())) &&
+        (!this.filtro.clienteId || t.clienteId === this.filtro.clienteId) &&
+        (!this.filtro.categoriaId || t.categoriaId === this.filtro.categoriaId) &&
+        (!this.filtro.responsavelId || t.responsavelId === this.filtro.responsavelId) &&
+        (!this.filtro.estado || t.estado === this.filtro.estado)
+      );
+    });
   }
 
   salvar() {
-    console.log('Salvando teste:', this.novoTeste); // 👈 VERIFICAÇÃO
     if (this.editandoId !== null) {
       this.testeService.update(this.editandoId, this.novoTeste);
       this.editandoId = null;
@@ -83,10 +101,10 @@ categoriaAlterada() {
   }
 
   editar(t: Teste) {
-  this.novoTeste = { ...t };
-  this.editandoId = t.id;
-  this.categoriaAlterada(); // ✅ atualiza exibição do campo responsável ao editar
-}
+    this.novoTeste = { ...t };
+    this.editandoId = t.id;
+    this.categoriaAlterada();
+  }
 
   excluir(id: number) {
     this.testeService.delete(id);
@@ -108,8 +126,8 @@ categoriaAlterada() {
     return r ? r.nome : 'Desconhecido';
   }
 
-    nomeCliente(id: number): string {
+  nomeCliente(id: number): string {
     const cli = this.clientes.find(c => c.id === id);
     return cli ? cli.nome : 'Desconhecido';
-    }
+  }
 }

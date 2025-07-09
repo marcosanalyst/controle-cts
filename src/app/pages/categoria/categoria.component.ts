@@ -14,11 +14,16 @@ import { ClienteService } from '../../services/cliente.service';
 })
 export class CategoriaComponent {
   categorias: Categoria[] = [];
+  categoriasFiltradas: Categoria[] = [];
+
   clientes: Cliente[] = [];
 
   nomeCategoria = '';
   clienteIdSelecionado: number | null = null;
   editandoId: number | null = null;
+
+  filtroNome = '';
+  filtroClienteId: number | null = null;
 
   constructor(
     private categoriaService: CategoriaService,
@@ -30,6 +35,7 @@ export class CategoriaComponent {
   carregar() {
     this.categorias = this.categoriaService.getAll();
     this.clientes = this.clienteService.getAll();
+    this.aplicarFiltro();
   }
 
   salvar() {
@@ -72,5 +78,12 @@ export class CategoriaComponent {
   nomeCliente(clienteId: number): string {
     const cliente = this.clientes.find(c => c.id === clienteId);
     return cliente ? cliente.nome : 'Desconhecido';
+  }
+
+  aplicarFiltro() {
+    this.categoriasFiltradas = this.categorias.filter(c =>
+      (!this.filtroNome || c.nome.toLowerCase().includes(this.filtroNome.toLowerCase())) &&
+      (!this.filtroClienteId || c.clienteId === this.filtroClienteId)
+    );
   }
 }

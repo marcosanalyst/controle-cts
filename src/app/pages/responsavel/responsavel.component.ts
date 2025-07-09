@@ -13,10 +13,17 @@ import { Responsavel } from '../../models/responsavel.model';
 export class ResponsavelComponent {
   responsaveis: Responsavel[] = [];
   nomeResponsavel = '';
+  filtro: string = '';
   editandoId: number | null = null;
 
   constructor(private responsavelService: ResponsavelService) {
     this.carregar();
+  }
+
+  get responsaveisFiltrados(): Responsavel[] {
+    return this.responsaveis.filter(r =>
+      r.nome.toLowerCase().includes(this.filtro.toLowerCase())
+    );
   }
 
   carregar() {

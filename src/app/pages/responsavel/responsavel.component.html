@@ -1,29 +1,44 @@
-<h2>Cadastro de Responsáveis</h2>
+<div class="container">
+  <h2>Cadastro de Responsáveis</h2>
 
-<form (ngSubmit)="salvar()">
-  <input [(ngModel)]="nomeResponsavel" name="nome" placeholder="Nome do responsável" required />
-  <button type="submit">{{ editandoId ? 'Atualizar' : 'Adicionar' }}</button>
-  <button *ngIf="editandoId" (click)="cancelar()" type="button">Cancelar</button>
-</form>
+  <form (ngSubmit)="salvar()" class="form">
+    <input
+      [(ngModel)]="nomeResponsavel"
+      name="nome"
+      placeholder="Nome do responsável"
+      required
+    />
+    <button type="submit">{{ editandoId ? 'Atualizar' : 'Adicionar' }}</button>
+    <button *ngIf="editandoId" (click)="cancelar()" type="button">Cancelar</button>
+  </form>
 
-<hr />
+  <input
+    type="text"
+    [(ngModel)]="filtro"
+    name="filtro"
+    placeholder="Filtrar por nome"
+    class="filtro"
+  />
 
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nome</th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let r of responsaveis">
-      <td>{{ r.id }}</td>
-      <td>{{ r.nome }}</td>
-      <td>
-        <button (click)="editar(r)">Editar</button>
-        <button (click)="excluir(r.id)">Excluir</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+  <hr />
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of responsaveisFiltrados">
+        <td>{{ r.id }}</td>
+        <td>{{ r.nome }}</td>
+        <td>
+          <button (click)="editar(r)">Editar</button>
+          <button (click)="excluir(r.id)">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
