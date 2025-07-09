@@ -60,6 +60,7 @@
     <thead>
       <tr>
         <th>Cliente</th>
+        <th>Nome do Teste</th>
         <th>Categoria</th>
         <th>Responsável</th>
         <th>Estado</th>
@@ -69,6 +70,7 @@
     <tbody>
       <tr *ngFor="let teste of testesFiltrados">
         <td>{{ nomeCliente(teste.clienteId) }}</td>
+        <td>{{ teste.nome }}</td>
         <td>{{ nomeCategoria(teste.categoriaId) }}</td>
         <td>{{ nomeResponsavel(teste.responsavelId) }}</td>
         <td>{{ teste.estado }}</td>
