@@ -37,6 +37,12 @@ export class TesteComponent {
 
   editandoId: number | null = null;
   
+  mostrarCampoResponsavel: boolean = true;
+
+categoriaAlterada() {
+  const categoria = this.categorias.find(c => c.id === this.novoTeste.categoriaId);
+  this.mostrarCampoResponsavel = !categoria?.responsavelId;
+}
 
   constructor(
     private testeService: TesteService,
@@ -77,9 +83,10 @@ export class TesteComponent {
   }
 
   editar(t: Teste) {
-    this.novoTeste = { ...t };
-    this.editandoId = t.id;
-  }
+  this.novoTeste = { ...t };
+  this.editandoId = t.id;
+  this.categoriaAlterada(); // ✅ atualiza exibição do campo responsável ao editar
+}
 
   excluir(id: number) {
     this.testeService.delete(id);

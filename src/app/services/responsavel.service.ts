@@ -11,6 +11,14 @@ export class ResponsavelService {
   }
 
   create(responsavel: Omit<Responsavel, 'id'>): void {
+    const nomeExistente = this.responsaveis.some(
+      r => r.nome.trim().toLowerCase() === responsavel.nome.trim().toLowerCase()
+    );
+    if (nomeExistente) {
+      alert('Já existe um responsável com esse nome.');
+      return;
+    }
+
     this.responsaveis.push({ id: this.nextId++, ...responsavel });
   }
 

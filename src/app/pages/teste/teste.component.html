@@ -10,19 +10,22 @@
     </option>
   </select>
 
-  <select [(ngModel)]="novoTeste.categoriaId" name="categoria" required>
+  <select [(ngModel)]="novoTeste.categoriaId" name="categoria" required (change)="categoriaAlterada()">
     <option [ngValue]="0" disabled>Selecione uma categoria</option>
     <option *ngFor="let c of categorias" [ngValue]="c.id">
       {{ c.nome }}
     </option>
   </select>
 
-  <select [(ngModel)]="novoTeste.responsavelId" name="responsavel" required>
-    <option [ngValue]="0" disabled>Selecione um responsável</option>
-    <option *ngFor="let r of responsaveis" [ngValue]="r.id">
-      {{ r.nome }}
-    </option>
-  </select>
+  <!-- Só exibe o campo responsável se a categoria não tiver responsável associado -->
+  <div *ngIf="mostrarCampoResponsavel">
+    <select [(ngModel)]="novoTeste.responsavelId" name="responsavel">
+      <option [ngValue]="0" disabled selected>Selecione um responsável</option>
+      <option *ngFor="let r of responsaveis" [ngValue]="r.id">
+        {{ r.nome }}
+      </option>
+    </select>
+  </div>
 
   <select [(ngModel)]="novoTeste.estado" name="estado">
     <option value="em_andamento">Em Andamento</option>

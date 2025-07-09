@@ -1,5 +1,6 @@
 export interface Categoria {
   id: number;
   nome: string;
-  clienteId: number; // relacionamento com Cliente
+  clienteId: number;
+  responsavelId?: number; // relacionamento com Cliente
 }
