@@ -5,13 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { Teste } from '../../models/teste.model';
 import { Categoria } from '../../models/categoria.model';
 import { Responsavel } from '../../models/responsavel.model';
+import { Cliente } from '../../models/cliente.model';
 
 import { TesteService } from '../../services/teste.service';
 import { CategoriaService } from '../../services/categoria.service';
 import { ResponsavelService } from '../../services/responsavel.service';
-
-import { Cliente } from '../../models/cliente.model';
 import { ClienteService } from '../../services/cliente.service';
+
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-teste',
@@ -129,5 +130,64 @@ export class TesteComponent {
   nomeCliente(id: number): string {
     const cli = this.clientes.find(c => c.id === id);
     return cli ? cli.nome : 'Desconhecido';
+  }
+
+  handleFileInput(event: any): void {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(sheet);
+
+      const clientes = this.clientes;
+      const categorias = this.categorias;
+      const responsaveis = this.responsaveis;
+
+      rows.forEach((row: any) => {
+        const cliente = clientes.find(c => c.nome === row.Cliente);
+        const categoria = categorias.find(c => c.nome === row.Categoria);
+        const responsavel = responsaveis.find(r => r.nome === row.Responsável);
+
+        if (!cliente || !categoria || !responsavel) return;
+
+        const novoTeste: Teste = {
+          id: 0,
+          nome: row.Nome,
+          clienteId: cliente.id,
+          categoriaId: categoria.id,
+          responsavelId: responsavel.id,
+          estado: row.Estado,
+          impedimento: row.Impedimento && row.Impedimento !== '—' ? row.Impedimento : '',
+          dataCriacao: row['Data Criação'] && row['Data Criação'] !== '—'
+            ? this.converterData(row['Data Criação']) : this.dataAtual(),
+          dataFinalizacao: row['Data Finalização'] && row['Data Finalização'] !== '—'
+            ? this.converterData(row['Data Finalização']) : undefined
+        };
+
+        this.testeService.create(novoTeste);
+      });
+
+      this.carregar();
+      alert('Importação concluída!');
+    };
+
+    reader.readAsArrayBuffer(file);
+  }
+
+  converterData(dataStr: string): string {
+    const [dia, mes, ano] = dataStr.split('/');
+    return `${ano}-${mes}-${dia}T00:00:00`;
+  }
+
+  dataAtual(): string {
+    const hoje = new Date();
+    const yyyy = hoje.getFullYear();
+    const mm = String(hoje.getMonth() + 1).padStart(2, '0');
+    const dd = String(hoje.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}T00:00:00`;
   }
 }
