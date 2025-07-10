@@ -11,8 +11,7 @@
     <button type="submit">{{ editandoId ? 'Atualizar' : 'Adicionar' }}</button>
     <button *ngIf="editandoId" (click)="cancelar()" type="button">Cancelar</button>
   </form>
-
-  <input
+    <input
     type="text"
     [(ngModel)]="filtro"
     name="filtro"

@@ -58,6 +58,10 @@
   Limpar Filtros
 </button>
 
+<div class="acoes-relatorio">
+  <button (click)="exportarParaExcel()">📤 Exportar Excel</button>
+</div>
+
 
   <!-- Tabela -->
   <table *ngIf="testesFiltrados.length > 0">
