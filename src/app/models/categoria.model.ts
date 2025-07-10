@@ -3,4 +3,5 @@ export interface Categoria {
   nome: string;
   clienteId: number;
   responsavelId?: number; // relacionamento com Cliente
+  dataCriacao?: string;
 }

@@ -20,7 +20,7 @@ export class TesteService {
     return this.testes;
   }
 
-  create(teste: Omit<Teste, 'id' | 'dataCadastro'>): void {
+  create(teste: Omit<Teste, 'id' | 'dataCriacao'>): void {
     const nomeExistente = this.testes.some(
       t => t.nome.trim().toLowerCase() === teste.nome.trim().toLowerCase()
     );
@@ -33,7 +33,7 @@ export class TesteService {
 
     const novoTeste: Teste = {
       id: this.nextId++,
-      dataCadastro: new Date(),
+      dataCriacao: new Date().toISOString(),
       ...teste,
       responsavelId:
         teste.responsavelId && teste.responsavelId !== 0

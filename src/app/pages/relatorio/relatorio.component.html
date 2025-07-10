@@ -69,6 +69,7 @@
         <th>Responsável</th>
         <th>Estado</th>
         <th>Impedimento</th>
+        <th>Data Criação</th>
       </tr>
     </thead>
     <tbody>
@@ -79,6 +80,7 @@
         <td>{{ nomeResponsavel(teste.responsavelId) }}</td>
         <td>{{ teste.estado }}</td>
         <td>{{ teste.impedimento }}</td>
+        <td>{{ teste.dataCriacao | date:'dd/MM/yyyy HH:mm' }}</td>
       </tr>
     </tbody>
   </table>
