@@ -1,0 +1,53 @@
+<div class="container">
+  <h2>Meus Testes</h2>
+
+  <!-- 🔍 Filtro por Responsável -->
+  <div class="filtros">
+    <label>
+      Responsável:
+      <select [(ngModel)]="responsavelSelecionadoId" (change)="filtrarPorResponsavel()">
+        <option [ngValue]="null">Selecione um responsável</option>
+        <option *ngFor="let r of responsaveis" [ngValue]="r.id">
+          {{ r.nome }}
+        </option>
+      </select>
+    </label>
+  </div>
+  
+  <table *ngIf="testesFiltrados.length > 0">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Cliente</th>
+      <th>Categoria</th>
+      <th>Responsável</th>
+      <th>Estado</th>
+      <th>Impedimento</th>
+      <th>Data Criação</th>
+      <th>Data Finalização</th>
+      <th>Ações</th> <!-- 👈 Nova coluna -->
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let t of testesFiltrados">
+      <td>{{ t.id }}</td>
+      <td>{{ t.nome }}</td>
+      <td>{{ nomeCliente(t.clienteId) }}</td>
+      <td>{{ nomeCategoria(t.categoriaId) }}</td>
+      <td>{{ nomeResponsavel(t.responsavelId) }}</td>
+      <td>{{ t.estado }}</td>
+      <td>{{ t.impedimento }}</td>
+      <td>{{ t.dataCriacao ? (t.dataCriacao | date: 'dd/MM/yyyy HH:mm') : '—' }}</td>
+      <td>{{ t.dataFinalizacao ? (t.dataFinalizacao.toString() | date: 'dd/MM/yyyy HH:mm') : '—' }}</td>
+      <td>
+        <button (click)="editar(t)">Editar</button>
+        <button (click)="excluir(t.id)">Excluir</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p *ngIf="testesFiltrados.length === 0">
+  Nenhum teste encontrado para o responsável selecionado.
+</p>
