@@ -19,7 +19,6 @@ import { CategoriaService } from '../../services/categoria.service';
   styleUrls: ['./meus-testes.component.css'],
   imports: [NgIf, NgFor, FormsModule, DatePipe]
 })
-
 export class MeusTestesComponent implements OnInit {
   responsaveis: Responsavel[] = [];
   testes: Teste[] = [];
@@ -30,6 +29,8 @@ export class MeusTestesComponent implements OnInit {
   responsavelSelecionadoId: number | null = null;
   editandoId: number | null = null;
   testeEditando: Partial<Teste> = {};
+
+  mensagemSucesso: string = '';
 
   constructor(
     private testeService: TesteService,
@@ -65,12 +66,54 @@ export class MeusTestesComponent implements OnInit {
     this.testeEditando = { ...teste };
   }
 
-  salvar(): void {
-    if (this.editandoId !== null) {
-      this.testeService.update(this.editandoId, this.testeEditando);
-      this.cancelar();
-      this.carregarDados();
-    }
+salvar(): void {
+  if (this.editandoId !== null) {
+    const estadoAnterior = this.testes.find(t => t.id === this.editandoId)?.estado;
+    const novaDataFinalizacao =
+      this.testeEditando.estado === 'finalizado' && estadoAnterior !== 'finalizado'
+        ? new Date().toISOString()
+        : this.testeEditando.estado !== 'finalizado'
+        ? undefined
+        : this.testeEditando.dataFinalizacao;
+
+    const dadosAtualizados: Partial<Teste> = {
+      estado: this.testeEditando.estado,
+      impedimento: this.testeEditando.impedimento,
+      dataFinalizacao: novaDataFinalizacao
+    };
+
+    this.testeService.update(this.editandoId, dadosAtualizados);
+    this.cancelar();
+    this.carregarDados();
+    this.exibirMensagem('Teste atualizado com sucesso!');
+  }
+}
+
+
+  salvarAlteracoes(teste: Teste): void {
+    const estadoAnterior = this.testes.find(t => t.id === teste.id)?.estado;
+    const novaDataFinalizacao =
+      teste.estado === 'finalizado' && estadoAnterior !== 'finalizado'
+        ? new Date().toISOString()
+        : teste.estado !== 'finalizado'
+        ? undefined
+        : teste.dataFinalizacao;
+
+    const dadosAtualizados: Partial<Teste> = {
+      estado: teste.estado,
+      impedimento: teste.impedimento,
+      dataFinalizacao: novaDataFinalizacao
+    };
+
+    this.testeService.update(teste.id, dadosAtualizados);
+    this.testes = this.testeService.getAll();
+    this.filtrarPorResponsavel();
+    this.exibirMensagem('Alterações salvas com sucesso!');
+  }
+
+  exibirMensagem(msg: string): void {
+    this.mensagemSucesso = msg;
+    setTimeout(() => (this.mensagemSucesso = ''), 3000);
   }
 
   excluir(id: number): void {
