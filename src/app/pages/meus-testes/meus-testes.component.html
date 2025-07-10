@@ -13,41 +13,67 @@
       </select>
     </label>
   </div>
-  
+
+  <!-- 📋 Tabela -->
   <table *ngIf="testesFiltrados.length > 0">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nome</th>
-      <th>Cliente</th>
-      <th>Categoria</th>
-      <th>Responsável</th>
-      <th>Estado</th>
-      <th>Impedimento</th>
-      <th>Data Criação</th>
-      <th>Data Finalização</th>
-      <th>Ações</th> <!-- 👈 Nova coluna -->
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let t of testesFiltrados">
-      <td>{{ t.id }}</td>
-      <td>{{ t.nome }}</td>
-      <td>{{ nomeCliente(t.clienteId) }}</td>
-      <td>{{ nomeCategoria(t.categoriaId) }}</td>
-      <td>{{ nomeResponsavel(t.responsavelId) }}</td>
-      <td>{{ t.estado }}</td>
-      <td>{{ t.impedimento }}</td>
-      <td>{{ t.dataCriacao ? (t.dataCriacao | date: 'dd/MM/yyyy HH:mm') : '—' }}</td>
-      <td>{{ t.dataFinalizacao ? (t.dataFinalizacao.toString() | date: 'dd/MM/yyyy HH:mm') : '—' }}</td>
-      <td>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Cliente</th>
+        <th>Categoria</th>
+        <th>Responsável</th>
+        <th>Estado</th>
+        <th>Impedimento</th>
+        <th>Data Criação</th>
+        <th>Data Finalização</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+  <tr *ngFor="let t of testesFiltrados">
+    <td>{{ t.id }}</td>
+    <td>{{ t.nome }}</td>
+    <td>{{ nomeCliente(t.clienteId) }}</td>
+    <td>{{ nomeCategoria(t.categoriaId) }}</td>
+    <td>{{ nomeResponsavel(t.responsavelId) }}</td>
+
+    <td *ngIf="editandoId === t.id">
+      <select [(ngModel)]="testeEditando.estado">
+        <option value="em_andamento">Em Andamento</option>
+        <option value="finalizado">Finalizado</option>
+        <option value="impedido">Impedido</option>
+        <option value="backlog">Backlog</option>
+      </select>
+    </td>
+    <td *ngIf="editandoId === t.id">
+      <input [(ngModel)]="testeEditando.impedimento" placeholder="Impedimento" />
+    </td>
+
+    <td *ngIf="editandoId !== t.id">{{ t.estado }}</td>
+    <td *ngIf="editandoId !== t.id">{{ t.impedimento }}</td>
+
+    <td>{{ t.dataCriacao | date: 'dd/MM/yyyy HH:mm' }}</td>
+    <td>
+      {{ t.dataFinalizacao ? (t.dataFinalizacao.toString() | date: 'dd/MM/yyyy HH:mm') : '—' }}
+    </td>
+
+    <td>
+      <ng-container *ngIf="editandoId === t.id; else acoesPadrao">
+        <button (click)="salvar()">Atualizar</button>
+        <button (click)="cancelar()">Cancelar</button>
+      </ng-container>
+      <ng-template #acoesPadrao>
         <button (click)="editar(t)">Editar</button>
         <button (click)="excluir(t.id)">Excluir</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+      </ng-template>
+    </td>
+  </tr>
+</tbody>
 
-<p *ngIf="testesFiltrados.length === 0">
-  Nenhum teste encontrado para o responsável selecionado.
-</p>
+  </table>
+
+  <p *ngIf="testesFiltrados.length === 0">
+    Nenhum teste encontrado para o responsável selecionado.
+  </p>
+</div>
