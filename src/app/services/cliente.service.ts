@@ -12,17 +12,21 @@ export class ClienteService {
     return this.clientes;
   }
 
-  create(cliente: Omit<Cliente, 'id'>): void {
-    const nomeExistente = this.clientes.some(
-      c => c.nome.trim().toLowerCase() === cliente.nome.trim().toLowerCase()
-    );
-    if (nomeExistente) {
-      alert('Já existe um cliente com esse nome.');
-      return;
-    }
-
-    this.clientes.push({ id: this.nextId++, ...cliente });
+create(cliente: Omit<Cliente, 'id'>): void {
+  const nomeExistente = this.clientes.some(
+    c => c.nome.trim().toLowerCase() === cliente.nome.trim().toLowerCase()
+  );
+  if (nomeExistente) {
+    alert('Já existe um cliente com esse nome.');
+    return;
   }
+
+  this.clientes.push({
+    id: this.nextId++,
+    ...cliente,
+    dataCriacao: new Date().toISOString()
+  });
+}
 
  update(id: number, nome: string): void {
   const nomeExistente = this.clientes.some(

@@ -28,6 +28,7 @@
     <tr>
       <th>ID</th>
       <th>Nome</th>
+      <th>Data de Criação</th>
       <th>Ações</th>
     </tr>
   </thead>
@@ -35,6 +36,7 @@
     <tr *ngFor="let cliente of clientes | filtroPorNome:filtroCliente">
       <td>{{ cliente.id }}</td>
       <td>{{ cliente.nome }}</td>
+      <td>{{ cliente.dataCriacao | date:'dd/MM/yyyy HH:mm' }}</td>
       <td>
         <button (click)="editar(cliente)">Editar</button>
         <button (click)="excluir(cliente.id)">Excluir</button>

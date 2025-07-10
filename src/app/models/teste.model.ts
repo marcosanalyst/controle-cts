@@ -6,6 +6,6 @@ export interface Teste {
   responsavelId: number;
   estado: 'em_andamento' | 'finalizado' | 'impedido' | 'backlog';
   impedimento: string;
-  dataCadastro: Date;
+  dataCriacao?: string;
   dataConclusao?: Date;
 }
