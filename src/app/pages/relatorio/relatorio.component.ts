@@ -58,6 +58,15 @@ export class RelatorioComponent implements OnInit {
     );
   }
 
+  limparFiltros(): void {
+  this.filtroClienteId = null;
+  this.filtroCategoriaId = null;
+  this.filtroResponsavelId = null;
+  this.filtroEstado = '';
+  this.filtroImpedimento = '';
+  this.testesFiltrados = this.testes; // mostra todos os testes novamente
+}
+
   nomeCliente(id: number): string {
     const cliente = this.clientes.find(c => c.id === id);
     return cliente ? cliente.nome : 'Desconhecido';
