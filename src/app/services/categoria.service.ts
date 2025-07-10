@@ -12,17 +12,22 @@ export class CategoriaService {
     return this.categorias;
   }
 
-  create(categoria: Omit<Categoria, 'id'>): void {
-    const nomeExistente = this.categorias.some(
-      c => c.nome.trim().toLowerCase() === categoria.nome.trim().toLowerCase()
-    );
-    if (nomeExistente) {
-      alert('Já existe uma categoria com esse nome.');
-      return;
-    }
-
-    this.categorias.push({ id: this.nextId++, ...categoria });
+create(categoria: Omit<Categoria, 'id'>): void {
+  const nomeExistente = this.categorias.some(
+    c => c.nome.trim().toLowerCase() === categoria.nome.trim().toLowerCase()
+  );
+  if (nomeExistente) {
+    alert('Já existe uma categoria com esse nome.');
+    return;
   }
+
+  this.categorias.push({
+    id: this.nextId++,
+    ...categoria,
+    dataCriacao: new Date().toISOString()
+  });
+}
+
 
   update(id: number, data: Partial<Categoria>): void {
     const index = this.categorias.findIndex(c => c.id === id);
