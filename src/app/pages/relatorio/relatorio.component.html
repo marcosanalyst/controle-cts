@@ -70,18 +70,21 @@
         <th>Estado</th>
         <th>Impedimento</th>
         <th>Data Criação</th>
+        <th>Data Finalização</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let teste of testesFiltrados">
-        <td>{{ nomeCliente(teste.clienteId) }}</td>
-        <td>{{ teste.nome }}</td>
-        <td>{{ nomeCategoria(teste.categoriaId) }}</td>
-        <td>{{ nomeResponsavel(teste.responsavelId) }}</td>
-        <td>{{ teste.estado }}</td>
-        <td>{{ teste.impedimento }}</td>
-        <td>{{ teste.dataCriacao | date:'dd/MM/yyyy HH:mm' }}</td>
-      </tr>
+        <tr *ngFor="let teste of testesFiltrados">
+          <td>{{ nomeCliente(teste.clienteId) }}</td>
+          <td>{{ teste.nome }}</td>
+          <td>{{ nomeCategoria(teste.categoriaId) }}</td>
+          <td>{{ nomeResponsavel(teste.responsavelId) }}</td>
+          <td>{{ teste.estado }}</td>
+          <td>{{ teste.impedimento }}</td>
+          <td>{{ teste.dataCriacao | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>{{ teste.dataFinalizacao ? (teste.dataFinalizacao.toString() | date: 'dd/MM/yyyy HH:mm') : '—' }}</td>
+        </tr>
+
     </tbody>
   </table>
 

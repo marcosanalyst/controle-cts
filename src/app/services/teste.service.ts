@@ -20,7 +20,7 @@ export class TesteService {
     return this.testes;
   }
 
-  create(teste: Omit<Teste, 'id' | 'dataCriacao'>): void {
+  create(teste: Omit<Teste, 'id' | 'dataCadastro'>): void {
     const nomeExistente = this.testes.some(
       t => t.nome.trim().toLowerCase() === teste.nome.trim().toLowerCase()
     );
@@ -31,36 +31,37 @@ export class TesteService {
 
     const categoria = this.categoriaService.getAll().find(c => c.id === teste.categoriaId);
 
-    const novoTeste: Teste = {
+      const novoTeste: Teste = {
       id: this.nextId++,
       dataCriacao: new Date().toISOString(),
       ...teste,
       responsavelId:
-        teste.responsavelId && teste.responsavelId !== 0
-          ? teste.responsavelId
-          : categoria?.responsavelId || 0,
-      dataConclusao: teste.estado === 'finalizado' ? new Date() : undefined
-    };
+      teste.responsavelId && teste.responsavelId !== 0
+      ? teste.responsavelId
+      : categoria?.responsavelId || 0,
+    dataFinalizacao: teste.estado === 'finalizado' ? new Date().toISOString() : undefined
+};
 
     this.testes.push(novoTeste);
     this.salvarNoLocalStorage();
   }
 
-  update(id: number, data: Partial<Teste>): void {
-    const index = this.testes.findIndex(t => t.id === id);
-    if (index !== -1) {
-      const estadoAnterior = this.testes[index].estado;
-      this.testes[index] = {
-        ...this.testes[index],
-        ...data,
-        dataConclusao:
-          data.estado === 'finalizado' && estadoAnterior !== 'finalizado'
-            ? new Date()
-            : this.testes[index].dataConclusao
-      };
-      this.salvarNoLocalStorage();
-    }
+update(id: number, data: Partial<Teste>): void {
+  const index = this.testes.findIndex(t => t.id === id);
+  if (index !== -1) {
+    const estadoAnterior = this.testes[index].estado;
+    this.testes[index] = {
+      ...this.testes[index],
+      ...data,
+      dataFinalizacao:
+        data.estado === 'finalizado' && estadoAnterior !== 'finalizado'
+          ? new Date().toISOString()
+          : this.testes[index].dataFinalizacao
+    };
+    this.salvarNoLocalStorage();
   }
+}
+
 
   delete(id: number): void {
     this.testes = this.testes.filter(t => t.id !== id);

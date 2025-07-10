@@ -4,4 +4,5 @@ export interface Categoria {
   clienteId: number;
   responsavelId?: number; // relacionamento com Cliente
   dataCriacao?: string;
+  dataFinalizacao?: string;
 }

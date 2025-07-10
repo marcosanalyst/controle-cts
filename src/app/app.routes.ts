@@ -24,6 +24,11 @@ export const routes: Routes = [
   path: 'relatorio',
   loadComponent: () => import('./pages/relatorio/relatorio.component').then(m => m.RelatorioComponent)
 },
+
+{
+  path: 'meus-testes',
+  loadComponent: () => import('./pages/meus-testes/meus-testes.component').then(m => m.MeusTestesComponent)
+},
   
   { path: '', redirectTo: 'clientes', pathMatch: 'full' },
   { path: '**', redirectTo: 'clientes' }

@@ -7,5 +7,5 @@ export interface Teste {
   estado: 'em_andamento' | 'finalizado' | 'impedido' | 'backlog';
   impedimento: string;
   dataCriacao?: string;
-  dataConclusao?: Date;
+  dataFinalizacao?: String;
 }
