@@ -147,6 +147,10 @@ export class TesteComponent {
       const categorias = this.categorias;
       const responsaveis = this.responsaveis;
 
+      // 🔧 Corrigido: calcular o último ID com base na lista atualizada
+      const ultimoId = this.testes.reduce((max, t) => t.id > max ? t.id : max, 0);
+      let proximoId = ultimoId + 1;
+
       rows.forEach((row: any) => {
         const cliente = clientes.find(c => c.nome === row.Cliente);
         const categoria = categorias.find(c => c.nome === row.Categoria);
@@ -155,7 +159,7 @@ export class TesteComponent {
         if (!cliente || !categoria || !responsavel) return;
 
         const novoTeste: Teste = {
-          id: 0,
+          id: proximoId++, // ✅ ID incremental agora funciona corretamente
           nome: row.Nome,
           clienteId: cliente.id,
           categoriaId: categoria.id,
