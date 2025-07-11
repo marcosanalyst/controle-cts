@@ -1,59 +1,133 @@
-# CadastroCasosTeste
+# 📋 Cadastro de Casos de Teste
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.5.
+Sistema web construído em **Angular** para gerenciar **Casos de Teste**, **Clientes**, **Categorias** e **Responsáveis**. Ideal para organizar demandas de QA e acompanhar o status de testes em diferentes etapas do ciclo de desenvolvimento.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🚀 Funcionalidades
 
-```bash
-ng serve
-```
+✅ Cadastro, edição e exclusão de:
+- Clientes
+- Categorias
+- Responsáveis
+- Casos de Teste
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+✅ Funcionalidades específicas:
+- Filtro por Cliente, Categoria, Responsável, Estado e Impedimento
+- Exportação de Casos de Teste para arquivo **Excel**
+- Importação de Casos de Teste via planilha `.xlsx`
+- Edição rápida de Estado e Impedimento no modo "Meus Testes"
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🛠️ Tecnologias Utilizadas
 
-```bash
-ng generate component component-name
-```
+- Angular 17+
+- TypeScript
+- HTML5 / CSS3
+- PrimeNG (em algumas versões)
+- XLSX (SheetJS) para importação/exportação
+- FileSaver.js para download de arquivos
+- Estrutura modular com `standalone components`
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## 📂 Estrutura do Projeto
 
 ```bash
-ng test
+src/
+├── app/
+│   ├── components/
+│   │   ├── cliente/
+│   │   ├── categoria/
+│   │   ├── responsavel/
+│   │   ├── teste/
+│   │   ├── meus-testes/
+│   │   └── relatorio/
+│   ├── models/
+│   └── services/
+└── assets/
 ```
 
-## Running end-to-end tests
+---
 
-For end-to-end (e2e) testing, run:
+## ▶️ Como Executar Localmente
+
+1. **Clone o repositório**:
+   ```bash
+   git clone https://github.com/seu-usuario/seu-repositorio.git
+   ```
+
+2. **Instale as dependências**:
+   ```bash
+   cd cadastro-casos-teste
+   npm install
+   ```
+
+3. **Execute o projeto**:
+   ```bash
+   ng serve
+   ```
+
+4. Acesse em:
+   ```
+   http://localhost:4200
+   ```
+
+---
+
+## 📦 Gerar Build de Produção
 
 ```bash
-ng e2e
+ng build --configuration production
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Os arquivos finais estarão na pasta `dist/`.
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 📁 Importação via Excel
+
+- A planilha de importação deve conter as colunas:
+
+| ID | Nome | Cliente | Categoria | Responsável | Estado | Impedimento | Data Criação | Data Finalização |
+|----|------|---------|-----------|-------------|--------|-------------|---------------|------------------|
+
+- Campos como Cliente, Categoria e Responsável devem corresponder exatamente aos nomes já cadastrados no sistema.
+
+📷 **Exemplo de Importação:**
+![Importação](./assets/exemplo-importacao.png)
+
+---
+
+## 📤 Exportação
+
+- O botão **Exportar** está disponível na tela de Relatórios.
+- Gera automaticamente uma planilha `.xlsx` com os testes filtrados.
+
+📷 **Exemplo de Exportação:**
+![Exportação](./assets/exemplo-exportacao.png)
+
+---
+
+## 🧪 Próximos Passos
+
+- Autenticação de usuários
+- Integração com backend em Java Spring Boot
+- Validações automáticas nas planilhas
+- Paginação nas tabelas
+- Implementação de testes automatizados (Unit e E2E)
+
+---
+
+## 📄 Licença
+
+Este projeto é open source e está disponível sob a licença MIT.
+
+---
+
+## 🤝 Contribuições
+
+Contribuições são bem-vindas! Abra uma issue ou envie um pull request.
+
+---
